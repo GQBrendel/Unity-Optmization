@@ -187,8 +187,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 875080570}
-  m_LocalRotation: {x: -0.08717229, y: 0.8995905, z: -0.21045253, w: -0.37262273}
-  m_LocalPosition: {x: 15.778305, y: 11.044812, z: 15.778306}
+  m_LocalRotation: {x: -0.53529173, y: -0.046319634, z: 0.029422892, w: -0.8428829}
+  m_LocalPosition: {x: -6.0954146, y: 25.130884, z: -15.360365}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -352,8 +352,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1910829608}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c5f8249fcaa99f47bb08490aec994da, type: 3}
+  m_Script: {fileID: 11500000, guid: ae04547752dac5643aec80c67d122b96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointPrefab: {fileID: 1070782955479946, guid: b1951dd5ff6127044bfafa17a19654eb,
-    type: 2}
+  pointPrefab: {fileID: 0}
+  points: []
+  hullPoints: []

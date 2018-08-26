@@ -1,16 +1,13 @@
-﻿using System.Collections;
+﻿/*
+    25/08/2018 - By Guilherme Brendel
+    Thanks for Learning at https://www.geeksforgeeks.org/quickhull-algorithm-convex-hull/
+*/
 using System.Collections.Generic;
 using UnityEngine;
-
 using System.Linq;
 
-
-struct Line
+public class QuickHull : MonoBehaviour
 {
-    public Vector3 first;
-    public Vector3 second;
-}
-public class PointStarter : MonoBehaviour {
 
     Pair<float, float>[] a = { new Pair<float, float>(-13,  0.5f), new Pair<float, float>(-10, -11.5f), new Pair<float, float>(-10 , 9),
     new Pair<float, float>(-4.5f,  -2), new Pair<float, float>(-1,  8.5f), new Pair<float, float>(0.5f,  6), new Pair<float, float>(0.5f,  -12),
@@ -22,39 +19,34 @@ public class PointStarter : MonoBehaviour {
     public List<GameObject> points = new List<GameObject>();
     public List<Transform> hullPoints = new List<Transform>();
 
-    void Start () {        
+    void Start()
+    {
 
         foreach (Pair<float, float> pointPair in a)
         {
             Vector3 pos = new Vector3(pointPair.First, 0, pointPair.Second);
-                go = Instantiate(pointPrefab, pos, Quaternion.identity, this.transform) as GameObject;
-                points.Add(go);
+            go = Instantiate(pointPrefab, pos, Quaternion.identity, this.transform) as GameObject;
+            points.Add(go);
         }
         int n = 13;
         printHull(a, n);
 
     }
-    
-// Stores the result (points of convex hull)
-Stack<Pair<float, float>> hullStack = new Stack<Pair<float, float>>();    
+
+    // Stores the result (points of convex hull)
+    Stack<Pair<float, float>> hullStack = new Stack<Pair<float, float>>();
 
     // Returns the side of point p with respect to line
     // joining points p1 and p2.
     int findSide(Pair<float, float> l1, Pair<float, float> l2, Pair<float, float> l)
-    {       
+    {
         float val = (l.Second - l1.Second) * (l2.First - l1.First) -
                   (l2.Second - l1.Second) * (l.First - l1.First);
-
-       // Debug.Log("L1: (" + l1.First + ", " + l1.Second + ") ");
-      //  Debug.Log("L2: (" + l2.First + ", " + l2.Second + ") ");
-      //  Debug.Log("L: (" + l.First + ", " + l.Second + ") ");
-       // Debug.Log("Val: " + val);
-
         if (val > 0)
             return 1;
         if (val < 0)
             return -1;
-        
+
         return 0;
     }
     // Returns the square of distance between
@@ -99,10 +91,10 @@ Stack<Pair<float, float>> hullStack = new Stack<Pair<float, float>>();
         {
             hullStack.Push(p1);
             hullStack.Push(p2);
-            
+
             return;
         }
- 
+
         // Recur for the two parts divided by a[ind]
         quickHull(a, n, a[ind], p1, -findSide(a[ind], p1, p2));
         quickHull(a, n, a[ind], p2, -findSide(a[ind], p2, p1));
@@ -138,8 +130,8 @@ Stack<Pair<float, float>> hullStack = new Stack<Pair<float, float>>();
         quickHull(a, n, a[min_x], a[max_x], -1);
 
 
-       foreach (GameObject point in points)
-       {
+        foreach (GameObject point in points)
+        {
             bool belong = false;
             foreach (Pair<float, float> hull in hullStack)
             {
@@ -152,15 +144,15 @@ Stack<Pair<float, float>> hullStack = new Stack<Pair<float, float>>();
             {
                 hullPoints.Add(point.transform);
             }
-       }
+        }
 
-        hullPoints = hullPoints.OrderBy(go => go.position.x).ToList();
+        hullPoints = hullPoints.OrderBy(go => Mathf.Atan2(go.position.x, go.position.z)).ToList();
 
 
         Debug.Log("The points in Convex Hull are:\n");
         for (int i = 0; i < hullPoints.Count; i++)
         {
-            if(i == hullPoints.Count - 1)
+            if (i == hullPoints.Count - 1)
             {
                 drawLaser(hullPoints[i], hullPoints[0]);
             }
@@ -171,15 +163,8 @@ Stack<Pair<float, float>> hullStack = new Stack<Pair<float, float>>();
 
             Debug.Log("(" + hullPoints[i].position.x + ", " + hullPoints[i].position.z + ") ");
         }
-        /*
-        Debug.Log("The points in Convex Hull are:\n");
-        while (hullStack.Count != 0)
-        {
-            Debug.Log("(" + hullStack.Peek().First + ", " + hullStack.Peek().Second + ") ");
-            hullStack.Pop();
-        }*/
-
     }
+
     void drawLaser(Transform start, Transform end)
     {
         LineRenderer laser;
@@ -210,3 +195,4 @@ public class Pair<T, U>
     public T First { get; set; }
     public U Second { get; set; }
 };
+
