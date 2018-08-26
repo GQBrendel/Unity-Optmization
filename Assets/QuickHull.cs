@@ -8,12 +8,11 @@ using System.Linq;
 
 public class QuickHull : MonoBehaviour
 {
+    public bool useRandomPoints;
+    
 
-    Pair<float, float>[] a = { new Pair<float, float>(-13,  0.5f), new Pair<float, float>(-10, -11.5f), new Pair<float, float>(-10 , 9),
-    new Pair<float, float>(-4.5f,  -2), new Pair<float, float>(-1,  8.5f), new Pair<float, float>(0.5f,  6), new Pair<float, float>(0.5f,  -12),
-    new Pair<float, float>(2,  12.5f), new Pair<float, float>(3.5f,  11), new Pair<float, float>(6.5f,  3.2f), new Pair<float, float>(7,  -10),
-    new Pair<float, float>(9,  -5), new Pair<float, float>(11.5f,  -4)};
 
+   
     public GameObject pointPrefab;
     GameObject go;
     public List<GameObject> points = new List<GameObject>();
@@ -21,20 +20,43 @@ public class QuickHull : MonoBehaviour
 
     void Start()
     {
+        Pair<float, float>[] hullValuesFixed = { fixedPoint(-13,  0.5f), fixedPoint(-10, -11.5f), fixedPoint(-10 , 9),
+        fixedPoint(-4.5f,  -2), fixedPoint(-1,  8.5f), fixedPoint(0.5f,  6), fixedPoint(0.5f,  -12),
+        fixedPoint(2,  12.5f), fixedPoint(3.5f,  11), fixedPoint(6.5f,  3.2f), fixedPoint(7,  -10),
+        fixedPoint(9,  -5), fixedPoint(11.5f,  -4)};
 
-        foreach (Pair<float, float> pointPair in a)
-        {
-            Vector3 pos = new Vector3(pointPair.First, 0, pointPair.Second);
-            go = Instantiate(pointPrefab, pos, Quaternion.identity, this.transform) as GameObject;
-            points.Add(go);
-        }
+        Pair<float, float>[] hullValuesRandom = { rngPoint(), rngPoint(), rngPoint(),
+        rngPoint(), rngPoint(), rngPoint(), rngPoint(),
+        rngPoint(), rngPoint(), rngPoint(), rngPoint(),
+        rngPoint(), rngPoint() };
+
         int n = 13;
-        printHull(a, n);
-
+        if (useRandomPoints)
+        {
+            foreach (Pair<float, float> pointPair in hullValuesRandom)
+            {
+                Vector3 pos = new Vector3(pointPair.First, 0, pointPair.Second);
+                go = Instantiate(pointPrefab, pos, Quaternion.identity, this.transform) as GameObject;
+                points.Add(go);
+            }
+            printHull(hullValuesRandom, n);
+        }
+        else
+        {
+            foreach (Pair<float, float> pointPair in hullValuesFixed)
+            {
+                Vector3 pos = new Vector3(pointPair.First, 0, pointPair.Second);
+                go = Instantiate(pointPrefab, pos, Quaternion.identity, this.transform) as GameObject;
+                points.Add(go);
+            }
+            printHull(hullValuesFixed, n);
+        }
     }
 
     // Stores the result (points of convex hull)
     Stack<Pair<float, float>> hullStack = new Stack<Pair<float, float>>();
+
+
 
     // Returns the side of point p with respect to line
     // joining points p1 and p2.
@@ -177,8 +199,20 @@ public class QuickHull : MonoBehaviour
         laser.SetPosition(0, startPos);
         laser.SetPosition(1, endPos);
     }
+    Pair<float, float> rngPoint()
+    {
+        float rngX = (Random.value * 20) - 10;
+        float rngY = (Random.value * 20) - 10;
+
+        return new Pair<float, float>(rngX, rngY);
+    }
+    Pair<float, float> fixedPoint(float x, float y)
+    {
+        return new Pair<float, float>(x, y);
+    }
 
 }
+
 
 public class Pair<T, U>
 {

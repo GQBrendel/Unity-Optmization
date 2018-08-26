@@ -355,6 +355,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae04547752dac5643aec80c67d122b96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointPrefab: {fileID: 0}
+  useRandomPoints: 1
+  pointPrefab: {fileID: 1070782955479946, guid: b1951dd5ff6127044bfafa17a19654eb,
+    type: 2}
   points: []
   hullPoints: []
